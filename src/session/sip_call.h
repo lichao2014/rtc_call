@@ -11,17 +11,17 @@
 
 namespace rtc_session {
 
-template<typename C, typename Handle = resip::InviteSessionHandle>
+template<typename Handle = resip::InviteSessionHandle>
 class SipCallContext {
 public:
     SipCallContext(std::shared_ptr<SipUserContext> user_ctx, const UserId& user_id)
         : user_ctx_(user_ctx)
         , user_id_(user_id) {
-        std::clog << "call ctx new\t" << this << std::endl;
+        //std::clog << "call ctx new\t" << this << std::endl;
     }
 
     ~SipCallContext() {
-        std::clog << "call ctx release\t" << this << std::endl;
+        //std::clog << "call ctx release\t" << this << std::endl;
     }
 
     auto& user_context() { return user_ctx_; }
@@ -128,10 +128,10 @@ protected:
 };
 
 class SipCallerContext 
-    : public SipCallContext<SipCallerContext, resip::ClientInviteSessionHandle>
+    : public SipCallContext<resip::ClientInviteSessionHandle>
     , public std::enable_shared_from_this<SipCallerContext> {
 public:
-    using SipCallContext<SipCallerContext, resip::ClientInviteSessionHandle>::SipCallContext;
+    using SipCallContext<resip::ClientInviteSessionHandle>::SipCallContext;
 
     void Invite(const std::string *offer);
     void End();
@@ -142,10 +142,10 @@ private:
 };
 
 class SipCalleeContext 
-    : public SipCallContext<SipCalleeContext, resip::ServerInviteSessionHandle>
+    : public SipCallContext<resip::ServerInviteSessionHandle>
     , public std::enable_shared_from_this<SipCalleeContext> {
 public:
-    using SipCallContext<SipCalleeContext, resip::ServerInviteSessionHandle>::SipCallContext;
+    using SipCallContext<resip::ServerInviteSessionHandle>::SipCallContext;
 
     void Accept(const std::string& answer, int code);
     void Reject(int code);
