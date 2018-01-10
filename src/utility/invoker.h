@@ -40,7 +40,7 @@ public:
                 return new T(std::forward<Args>(args)...);
             }),
 
-            [this](auto p) {
+            [this](T *p) {
                 this->Post([p] { delete p; });
             }
         };
